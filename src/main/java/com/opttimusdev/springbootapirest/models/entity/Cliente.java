@@ -1,66 +1,105 @@
 package com.opttimusdev.springbootapirest.models.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+
 @Entity
-@Table(name = "Clientes")
-public class Cliente implements Serializable {
+@Table(name = "clientes")
+public class Cliente {
+    public Cliente(){}
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
+    @Size(min = 4, max = 30, message = "error nombre")
     @NotEmpty(message = "no puede estar vacio")
-    @Size(min = 4, max = 12, message = "el tamaño tiene que estar entre 4 y 12")
-    @Column(nullable=false)
-    private String  nombre;
-
+    private String nombre;
+    @Column(nullable = false)
+    @Size(min = 4, max = 30, message = "error nombre")
     @NotEmpty(message = "no puede estar vacio")
     private String apellido;
-
-    @NotEmpty(message = "no puede estar vacio")
+    @Column(nullable = false)
     @Email(message = "el correo no tiene un formato valido")
-    @Column(nullable=false, unique = true)
+    @NotEmpty(message = "no puede estar vacio")
     private String email;
-
-    @Column(name = "create_at")
+    @NotNull(message = "digita la fecha")
+    @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date createdAt;
-    @PrePersist
-    public void prePersist(){
-        createdAt = new Date();
-    }
+
+    @NotNull(message = "region debe ser agregada")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id")
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private Region region;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    private List<Factura> facturas;
+
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getNombre() {
         return nombre;
     }
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
     public String getApellido() {
         return apellido;
     }
+
     public void setApellido(String apellido) {
         this.apellido = apellido;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public Date getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    private static final long serialVersuionUID = 1L;
+    public Region getRegion() {
+        return region;
+    }
+
+    public void setRegion(Region region) {
+        this.region = region;
+    }
+
+    public List<Factura> getFacturas() {
+        return facturas;
+    }
+
+    public void setFacturas(List<Factura> facturas) {
+        this.facturas = facturas;
+    }
+
+    private static final long serialVersionUID = 1l;
 }
