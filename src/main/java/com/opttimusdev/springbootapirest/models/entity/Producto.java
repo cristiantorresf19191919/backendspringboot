@@ -18,14 +18,17 @@ public class Producto {
     @Column()
     private Double precio;
     @Column(name = "created_at")
-    @Temporal(TemporalType.DATE)
-    private Date createAt;
+    private Date createdAt;
 
-    @PrePersist
-    public void getPersist(){
-        this.createAt = new Date();
+
+
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
 
     public Long getId() {
         return id;
@@ -51,13 +54,8 @@ public class Producto {
         this.precio = precio;
     }
 
-    public Date getCreateAt() {
-        return createAt;
-    }
 
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
+
 
     private static final long serialVersionUID = 1l;
 }

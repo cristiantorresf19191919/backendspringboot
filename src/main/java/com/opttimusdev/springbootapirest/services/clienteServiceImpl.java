@@ -2,8 +2,10 @@ package com.opttimusdev.springbootapirest.services;
 
 import com.opttimusdev.springbootapirest.dao.IClienteDao;
 import com.opttimusdev.springbootapirest.dao.IFacturaDao;
+import com.opttimusdev.springbootapirest.dao.IProductDao;
 import com.opttimusdev.springbootapirest.models.entity.Cliente;
 import com.opttimusdev.springbootapirest.models.entity.Factura;
+import com.opttimusdev.springbootapirest.models.entity.Producto;
 import com.opttimusdev.springbootapirest.models.entity.Region;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +25,9 @@ public class clienteServiceImpl implements IClientesServices {
 
     @Autowired
     private IFacturaDao iFacturaDao;
+
+    @Autowired
+    private IProductDao iProductDao;
 
     @Override
     @Transactional(readOnly = true)
@@ -50,6 +55,7 @@ public class clienteServiceImpl implements IClientesServices {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Region> findAllRegiones() {
         return iClienteDao.findAllRegiones();
     }
@@ -82,5 +88,22 @@ public class clienteServiceImpl implements IClientesServices {
     @Transactional(readOnly = true)
     public Factura findFacturaById(Long id) {
         return iFacturaDao.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Producto> findProductByName(String term) {
+        return iProductDao.findByNombre(term);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto> findProductoByNombre(String term) {
+        return iProductDao.findByNombre(term);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto> showAllProducts() {
+        return (List<Producto>) iProductDao.findAll();
     }
 }

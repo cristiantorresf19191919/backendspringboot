@@ -34,15 +34,17 @@ public class Cliente {
     @Temporal(TemporalType.DATE)
     private Date createdAt;
 
-    @NotNull(message = "region debe ser agregada")
+    private String foto;
+
+    @NotNull(message = "la region no puede ser nula")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "region_id")
     @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
     private Region region;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "cliente", cascade = CascadeType.ALL)
-    @JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+    @JsonIgnoreProperties(value = {"hibernateLazyInitializer","handler","cliente"},allowSetters = true)
     private List<Factura> facturas;
+
 
 
     public Long getId() {
@@ -52,6 +54,15 @@ public class Cliente {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public String getFoto() {
+        return foto;
+    }
+
+    public void setFoto(String foto) {
+        this.foto = foto;
+    }
+
 
     public String getNombre() {
         return nombre;

@@ -15,8 +15,8 @@ public interface IUsuarioDao extends CrudRepository<Usuario, Id> {
     // aca si le podemos meter el nombre que queramos
     // porque usamos la notacion query
     // select objeto usuario
-    // select username from usuarios where username = 'leopoldo'
-    // select username from Usuarios where username = 'leopoldo'
+    // select * from usuarios where username = 'leopoldo'
+    // select * from Usuarios where username = 'leopoldo'
     @Query("select u from Usuario u where u.username=?1")
     public Usuario findByUsername2(String username);
 

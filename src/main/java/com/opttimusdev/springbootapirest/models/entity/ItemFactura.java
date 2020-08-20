@@ -1,5 +1,7 @@
 package com.opttimusdev.springbootapirest.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -13,15 +15,26 @@ public class ItemFactura {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column()
+
     private Integer cantidad;
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.MERGE)
     @JoinColumn(name = "producto_id")
     private Producto producto;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.DATE)
     private Date createdAt;
+
+    public Double getImporte() {
+        return cantidad.doubleValue() * producto.getPrecio();
+    }
+    public Double getEdad() {return 27 * cantidad.doubleValue();}
+    public String getAuthor() {return "CristianScrtipt es el mejor";}
+
+
+
+    //getter and setters
 
     public Date getCreatedAt() {
         return createdAt;
@@ -31,7 +44,6 @@ public class ItemFactura {
         this.createdAt = createdAt;
     }
 
-    //getter and setters
     public Long getId() {
         return id;
     }
